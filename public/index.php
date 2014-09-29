@@ -4,8 +4,8 @@ error_reporting(E_ALL);
 
 try {
 	/**
-     * Define some useful constants
-     */
+	 * Define some useful constants
+	 */
     define('BASE_DIR', dirname(__DIR__));
     define('APP_DIR', BASE_DIR . '/apps');
 
@@ -24,6 +24,7 @@ try {
 	/**
 	 * We're a registering a set of directories taken from the configuration file
 	*/ 
+	/*
 	$loader->registerDirs(
 		array(
 			$config->application->pluginsDir,
@@ -31,13 +32,12 @@ try {
 			$config->application->coreDir,
 		)
 	)->register();
-	/*
+	*/
 	$loader->registerNamespaces(array(
 		'MyApp\Core' => $config->application->coreDir,
 		'MyApp' => $config->application->libraryDir
 	));
-	*/
-	//echo $config->application->coreDir;
+	$loader->register();
 	
 	
 	/**
@@ -59,40 +59,21 @@ try {
 	* setup config class to use
 	*/
 	$di['myconfig'] = function() use($di){
-		return new MyBaseConfig($di);
+		return new MyApp\Core\MyBaseConfig($di);
 	};
-	//$myConfig = new \MyBaseConfig($di);
 	
 	/**
 	 * Registering a router
 	 */
 	$di['router'] = function() use ($di){
 
-		$router = new \Phalcon\Mvc\Router(false);
+		$router = new \Phalcon\Mvc\Router(false);  //--- disable default router
 		$myroutercfg = $di->getMyconfig()->getRoutesCfg();
 		//--- setup all route from database
 		while($aroute = $myroutercfg->fetch()){
 			$router->add($aroute['route'],array('module'=>$aroute['module'],'controller'=>$aroute['controller'],'action'=>$aroute['action']));
 		}
-		/*
-		$router->add('/admin', array(
-			'module' => 'backend',
-			'controller' => 'index',
-			'action' => 'index'
-		));
-
-		$router->add('/index', array(
-			'module' => 'frontend',
-			'controller' => 'index',
-			'action' => 'index'
-		));
-
-		$router->add('/', array(
-			'module' => 'frontend',
-			'controller' => 'index',
-			'action' => 'index'
-		));
-		*/
+		
 		return $router;
 	};
 
@@ -130,18 +111,6 @@ try {
 		$modules[$amodule['module']]=array('className'=>$amodule['classname'],'path'=>$amodule['path']);
 	}
 	$application->registerModules($modules);
-	/*
-	array(
-		'frontend' => array(
-			'className' => 'Modules\Frontend\Module',
-			'path' => '../apps/frontend/Module.php'
-		),
-		'backend' => array(
-			'className' => 'Modules\Backend\Module',
-			'path' => '../apps/backend/Module.php'
-		)
-	)
-	*/
 
 	echo $application->handle()->getContent();
 

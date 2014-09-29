@@ -1,5 +1,5 @@
 <?php
-//namespace MyApp\Core;
+namespace MyApp\Core;
 use Phalcon\Events\EventsAwareInterface;
 
 
