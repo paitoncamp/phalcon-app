@@ -1,6 +1,6 @@
 /*
 SQLyog Community Edition- MySQL GUI v5.21
-Host - 5.5.16 : Database - pp_01
+Host - 5.5.16 : Database - phalcon-app
 *********************************************************************
 Server version : 5.5.16
 */
@@ -22,12 +22,22 @@ DROP TABLE IF EXISTS `attributes`;
 
 CREATE TABLE `attributes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `object_id` int(11) DEFAULT NULL,
   `attrname` varchar(100) DEFAULT NULL,
   `attrdesc` varchar(250) DEFAULT NULL,
+  `attrtype` varchar(10) DEFAULT NULL,
+  `length` int(3) DEFAULT NULL,
+  `domain` varchar(50) DEFAULT NULL,
+  `class` varchar(150) DEFAULT NULL,
+  `required` smallint(1) DEFAULT '0',
+  `searchtype` enum('NONE','EXACT','TEXT','WILDCARD') DEFAULT 'NONE',
+  `autonumber` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 /*Data for the table `attributes` */
+
+insert  into `attributes`(`id`,`object_id`,`attrname`,`attrdesc`,`attrtype`,`length`,`domain`,`class`,`required`,`searchtype`,`autonumber`) values (1,1,'orderid','Order ID','INT',11,NULL,NULL,1,'NONE','_DEFAULT_'),(2,1,'ordernum','Order Number','VARCHAR',10,NULL,NULL,0,'WILDCARD',NULL),(3,1,'orderdate','Order DateTime','DATETIME',10,NULL,NULL,0,'EXACT',NULL),(4,1,'requestby','Request By','VARCHAR',10,NULL,NULL,0,'TEXT',NULL),(5,1,'status','Order Status','VARCHAR',5,NULL,NULL,0,'WILDCARD',NULL);
 
 /*Table structure for table `modules` */
 
@@ -45,6 +55,23 @@ CREATE TABLE `modules` (
 /*Data for the table `modules` */
 
 insert  into `modules`(`id`,`module`,`classname`,`path`,`status`) values (1,'frontend','Modules\\Frontend\\Module','../apps/frontend/Module.php',1),(2,'backend','Modules\\Backend\\Module','../apps/backend/Module.php',1);
+
+/*Table structure for table `objects` */
+
+DROP TABLE IF EXISTS `objects`;
+
+CREATE TABLE `objects` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `objname` varchar(150) DEFAULT NULL,
+  `objdesc` varchar(200) DEFAULT NULL,
+  `class` varchar(250) DEFAULT NULL,
+  `mainobj` smallint(1) DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+/*Data for the table `objects` */
+
+insert  into `objects`(`id`,`objname`,`objdesc`,`class`,`mainobj`) values (1,'orders','Order main object','app.frontend.order',1),(2,'orderitems','List of detail order item','app.frontend.orderitem',0),(3,'items','List of items','app.frontend.item',1);
 
 /*Table structure for table `relationships` */
 
@@ -77,11 +104,26 @@ CREATE TABLE `routes` (
   `action` varchar(100) DEFAULT NULL,
   `status` smallint(1) DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 /*Data for the table `routes` */
 
-insert  into `routes`(`id`,`route`,`module`,`controller`,`action`,`status`) values (1,'/admin','backend','index','index',1),(2,'/index','frontend','index','index',1),(3,'/','frontend','index','index',1);
+insert  into `routes`(`id`,`route`,`module`,`controller`,`action`,`status`) values (1,'/admin','backend','index','index',1),(2,'/index','frontend','index','index',1),(3,'/','frontend','index','index',1),(4,'/coba','frontend','index','test',1);
+
+/*Table structure for table `usr_orders` */
+
+DROP TABLE IF EXISTS `usr_orders`;
+
+CREATE TABLE `usr_orders` (
+  `orderid` int(11) NOT NULL AUTO_INCREMENT,
+  `ordernum` varchar(10) DEFAULT NULL,
+  `orderdate` datetime DEFAULT NULL,
+  `requestby` varchar(10) DEFAULT NULL,
+  `status` varchar(5) DEFAULT NULL,
+  PRIMARY KEY (`orderid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `usr_orders` */
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

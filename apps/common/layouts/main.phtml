@@ -1,11 +1,113 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<link rel="stylesheet" href="./public/javascript/codebase/webix.css" type="text/css" media="screen" charset="utf-8">
+        <script src="./public/javascript/codebase/webix.js" type="text/javascript" charset="utf-8"></script>
+		
 		<title>Common Layout</title>
+		<style>
+			#areaA, #areaB{
+				margin: 50px;
+				width:700px; height:100px;
+			}
+            .blue.webix_menu-x{
+                background:#3498DB;
+            }
+		</style>
+
 	</head>
 	<body>
-		<div style="background: coral">
-			<?php echo $this->getContent(); ?>
+		<div id="tpl" style="background: coral" >
+			<?php echo $this->getContent() ?>
 		</div>
+		<script type="text/javascript" charset="utf-8">
+			var small_film_set = [
+				{ id:1, title:"The Shawshank Redemption", year:1994, votes:678790, rating:9.2, rank:1},
+				{ id:2, title:"The Godfather", year:1972, votes:511495, rating:9.2, rank:2},
+				{ id:3, title:"The Godfather: Part II", year:1974, votes:319352, rating:9.0, rank:3},
+				{ id:4, title:"The Good, the Bad and the Ugly", year:1966, votes:213030, rating:8.9, rank:4},
+				{ id:5, title:"My Fair Lady", year:1964, votes:533848, rating:8.9, rank:5},
+				{ id:6, title:"12 Angry Men", year:1957, votes:164558, rating:8.9, rank:6}
+			];
+		/*
+           webix.ui({
+               type:"space", responsive:true, cols:[
+                   { view:"list", data:["Users", "Reports", "Settings"],
+                     ready:function(){ this.select(this.getFirstId()); },
+                     select:true, scroll:false, width:200 },
+                   { view:"htmlform", content:"tpl", width:200 },
+                   { view:"datatable", columns:[
+                      { id:"title", fillspace:1 }, { id:"votes"},
+                     ], data:small_film_set, 
+                     minWidth:300 }
+               ]
+           }).show();
+		   
+		   webix.ui({
+               type:"space", id:"a1", rows:[{
+                 type:"space", padding:0, responsive:"a1", cols:[
+                     { view:"list", data:["Users", "Reports", "Settings"],
+                       ready:function(){ this.select(this.getFirstId()); },
+                       select:true, scroll:false, width:200 },
+                     { view:"htmlform", content:"tpl", width:200},
+                     { view:"datatable", select:true, columns:[
+                        { id:"title", fillspace:1 }, { id:"votes"},
+                       ], data:small_film_set, 
+                       minWidth:300 }
+                 ]}
+               ]
+           }).show();
+		*/
+		var menu_data = [
+			{ id:"1",value:"Translate...", submenu:[
+				"English", 
+				{ value:"Slavic...", submenu:[
+					"Belarus", "Russian", "Ukranian"
+				]},
+				"German"
+			]},
+			{ id:"2",value:"Post...", submenu:[ "Facebook", "Google+", "Twitter" ]},
+			{ id:"3",value:"Info" }
+		];
+		var menu = {
+			view:"menu",
+			data: menu_data,
+			css:"blue"
+		};
+		var toolbar = {
+			view:"toolbar", paddingY:0,  elements:[
+				{}, 
+				{ view:"text" },
+				{ view:"button", label:"Search", width:100 }
+			]
+		};
+
+
+		webix.ui({
+			rows:[
+				{ type:"clean", cols:[ menu, toolbar ] },
+				{ type:"space", id:"a1", rows:[{
+					type:"space", padding:0, responsive:"a1", 
+					cols:[
+						{ view:"list", data:["Users", "Reports", "Settings"],
+						ready:function(){ this.select(this.getFirstId()); },
+						select:true, scroll:false, width:200 },
+						{ view:"htmlform", content:"tpl", width:200},
+						{ view:"datatable", select:true, 
+						  columns:[
+							{ id:"title", fillspace:1 }, { id:"votes"},
+						  ], 
+						  data:small_film_set, 
+						  minWidth:300 }
+					]}
+				]}
+			]
+		}
+		);
+
+
+
+       </script>
+
 	</body>
 </html>
